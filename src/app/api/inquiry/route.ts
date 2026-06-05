@@ -59,18 +59,21 @@ export async function POST(request: Request) {
     const chatId = process.env.TELEGRAM_CHAT_ID;
 
     if (botToken && chatId) {
-      // Escape special markdown characters for Telegram MarkdownV2
-      const escapeMarkdown = (text: string) => {
-        return text.replace(/[_*\[\]()~`>#+\-=|{}.!]/g, "\\$&");
+      // Escape HTML characters to prevent breaking tags
+      const escapeHTML = (text: string) => {
+        return text
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;");
       };
 
-      const textMessage = `🔔 *New Admission Inquiry\\!*
-👤 *Parent:* ${escapeMarkdown(parentName)}
-📞 *Phone:* ${escapeMarkdown(cleanPhone)}
-📧 *Email:* ${escapeMarkdown(email || "N/A")}
-👶 *Child:* ${escapeMarkdown(childName)} (${ageNum} yrs)
-📚 *Program:* ${escapeMarkdown(program)}
-💬 *Message:* ${escapeMarkdown(message || "None")}`;
+      const textMessage = `🔔 <b>New Admission Inquiry!</b>
+👤 <b>Parent:</b> ${escapeHTML(parentName)}
+📞 <b>Phone:</b> ${escapeHTML(cleanPhone)}
+📧 <b>Email:</b> ${escapeHTML(email || "N/A")}
+👶 <b>Child:</b> ${escapeHTML(childName)} (${ageNum} yrs)
+📚 <b>Program:</b> ${escapeHTML(program)}
+💬 <b>Message:</b> ${escapeHTML(message || "None")}`;
 
       try {
         const tgRes = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
@@ -79,7 +82,7 @@ export async function POST(request: Request) {
           body: JSON.stringify({
             chat_id: chatId,
             text: textMessage,
-            parse_mode: "MarkdownV2",
+            parse_mode: "HTML",
           }),
         });
 

@@ -29,13 +29,14 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${fredoka.variable} ${quicksand.variable} h-full scroll-smooth antialiased`}
+      suppressHydrationWarning
     >
       <head>
         <script
           dangerouslySetInnerHTML={{
             __html: `
               try {
-                if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                if (localStorage.theme === 'dark') {
                   document.documentElement.classList.add('dark')
                 } else {
                   document.documentElement.classList.remove('dark')

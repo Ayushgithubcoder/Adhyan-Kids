@@ -110,8 +110,10 @@ export default function Footer() {
         {/* Footer Bottom */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
           <p>© {currentYear} Adhyan Kidz. All rights reserved.</p>
-          <p className="flex items-center gap-1">
-            Made with <Heart className="w-3.5 h-3.5 fill-brand-pink text-brand-pink" /> for kids' future.
+          <p className="flex items-center gap-1.5">
+            <span>Built by <a href="https://www.linkedin.com/in/ayush-sharma-480262250/" target="_blank" rel="noopener noreferrer" className="text-brand-orange hover:text-brand-yellow font-semibold hover:underline">Ayush Sharma</a></span>
+            <span className="text-slate-700">|</span>
+            <span>Made with <Heart className="w-3.5 h-3.5 fill-brand-pink text-brand-pink inline-block align-middle" /> for kids' future.</span>
           </p>
         </div>
       </div>
