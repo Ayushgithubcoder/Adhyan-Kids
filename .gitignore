@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local diagnostics & source assets
+diagnostics.js
+IMG_*.jpg
