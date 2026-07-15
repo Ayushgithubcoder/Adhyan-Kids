@@ -1,11 +1,10 @@
-import { Paintbrush, Compass, BookOpen, Music } from "lucide-react";
+import { Paintbrush, Compass, BookOpen, Music, Baby } from "lucide-react";
 
 export default function Programs() {
   const programs = [
     {
       name: "Playgroup",
       age: "1.5 - 2.5 Years",
-      time: "9:00 AM - 12:00 PM",
       description: "Focuses on sensory exploration, coordination, and building social confidence through fun-filled activities.",
       features: ["Fine Motor Development", "Storytelling & Rhymes", "Sensory Toys & Clay Play", "Socializing Skills"],
       color: "border-brand-yellow/30 bg-brand-yellow/5 text-brand-orange hover:bg-brand-yellow/10",
@@ -15,7 +14,6 @@ export default function Programs() {
     {
       name: "Nursery",
       age: "2.5 - 3.5 Years",
-      time: "9:00 AM - 12:30 PM",
       description: "Introduces pre-reading and writing concepts along with artistic skills in a highly interactive format.",
       features: ["Basic Literacy & Phonics", "Numbers & Counting", "Arts, Crafts & Coloring", "Puppet Shows & Drama"],
       color: "border-brand-pink/30 bg-brand-pink/5 text-brand-pink hover:bg-brand-pink/10",
@@ -25,7 +23,6 @@ export default function Programs() {
     {
       name: "Junior KG / LKG",
       age: "3.5 - 4.5 Years",
-      time: "8:30 AM - 1:00 PM",
       description: "Nurtures cognitive growth, phonic reading, vocabulary, and basic mathematical operations.",
       features: ["Writing Sentences", "Advanced Math Concepts", "Public Speaking Exercises", "Interactive Science Play"],
       color: "border-brand-blue/30 bg-brand-blue/5 text-brand-blue hover:bg-brand-blue/10",
@@ -35,12 +32,20 @@ export default function Programs() {
     {
       name: "Senior KG / UKG",
       age: "4.5 - 5.5 Years",
-      time: "8:30 AM - 1:00 PM",
       description: "Prepares young learners for formal schooling with an emphasis on independent reading and critical thinking.",
       features: ["Self-Expression & Speech", "Basic Addition/Subtraction", "Environmental Awareness", "Creative Problem Solving"],
       color: "border-brand-purple/30 bg-brand-purple/5 text-brand-purple hover:bg-brand-purple/10",
       badgeColor: "bg-brand-purple text-white",
       icon: BookOpen,
+    },
+    {
+      name: "Day Care",
+      age: "1.5 - 8.5 Years",
+      description: "Provides a safe, hygienic, and nurturing environment for children with supervised play, resting spaces, and engaging activities.",
+      features: ["Safe & Hygienic Environment", "Supervised Play & Activities", "Nutritious Meals Available", "Nap & Rest Areas"],
+      color: "border-brand-teal/30 bg-brand-teal/5 text-brand-teal hover:bg-brand-teal/10",
+      badgeColor: "bg-brand-teal text-white",
+      icon: Baby,
     },
   ];
 
@@ -61,7 +66,7 @@ export default function Programs() {
         </div>
 
         {/* Programs Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8">
           {programs.map((program, idx) => {
             const Icon = program.icon;
             return (
@@ -79,9 +84,7 @@ export default function Programs() {
                   <h3 className="font-display text-2xl font-bold text-slate-800 dark:text-[#FFF5EB] mb-2">
                     {program.name}
                   </h3>
-                  <p className="text-slate-500 dark:text-slate-400 text-xs font-semibold mb-4">
-                    🕒 {program.time}
-                  </p>
+
                   <p className="text-slate-600 dark:text-[#E8D4C4] text-sm leading-relaxed mb-6">
                     {program.description}
                   </p>

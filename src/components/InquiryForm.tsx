@@ -18,7 +18,7 @@ export default function InquiryForm() {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState("");
 
-  const programsList = ["Playgroup", "Nursery", "Junior KG / LKG", "Senior KG / UKG"];
+  const programsList = ["Playgroup", "Nursery", "Junior KG / LKG", "Senior KG / UKG", "Day Care"];
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setFormData({
@@ -88,11 +88,11 @@ export default function InquiryForm() {
               </div>
               <div>
                 <p className="text-xs text-purple-200 uppercase font-bold tracking-wider">Phone Helpline:</p>
-                <p className="text-sm font-semibold">+91 98765 43210</p>
+                <p className="text-sm font-semibold">+91 95367 17172</p>
               </div>
               <div>
                 <p className="text-xs text-purple-200 uppercase font-bold tracking-wider">Timings:</p>
-                <p className="text-sm font-semibold">Mon - Sat: 8:00 AM - 2:00 PM</p>
+                <p className="text-sm font-semibold">Mon - Sat: 8:30 AM - 1:30 PM</p>
               </div>
             </div>
           </div>

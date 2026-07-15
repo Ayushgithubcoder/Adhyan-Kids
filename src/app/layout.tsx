@@ -16,7 +16,7 @@ const quicksand = Quicksand({
 
 export const metadata: Metadata = {
   title: "Adhyan Kidz Play School | Best Preschool in Modipuram, Meerut",
-  description: "Welcome to Adhyan Kidz Play School in Modipuram, Meerut. We provide a nurturing, creative, and safe environment for playgroup, nursery, LKG, and UKG kids. Enroll now!",
+  description: "Welcome to Adhyan Kidz Play School in Modipuram, Meerut. We provide a nurturing, creative, and safe environment for playgroup, nursery, LKG, UKG kids, and day care facility. Enroll now!",
   keywords: ["Adhyan Kidz", "Play School Meerut", "Best Preschool Modipuram", "Adhyan Kidz Play School", "Nursery School Meerut", "Admissions Open 2026"],
 };
 

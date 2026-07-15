@@ -3,30 +3,26 @@ import Image from "next/image";
 export default function Gallery() {
   const images = [
     {
-      src: "/images/photo_2026-06-04_22-30-09.jpg",
+      src: "/images/activities_kids_playing.png",
       title: "Active Playtime",
-      tag: "Play Area",
       desc: "Safe and clean indoor activities space.",
       span: "md:col-span-2 md:row-span-1",
     },
     {
       src: "/images/playschool_classroom.png",
       title: "Creative Learning Zone",
-      tag: "Classroom",
       desc: "Bright classroom setup with child-friendly furniture.",
       span: "md:col-span-1 md:row-span-1",
     },
     {
       src: "/images/playschool_playground.png",
       title: "Outdoor Play Park",
-      tag: "Playground",
       desc: "Lush green outdoor play zone with swings.",
       span: "md:col-span-1 md:row-span-1",
     },
     {
-      src: "/images/photo_2026-06-04_22-30-17.jpg",
+      src: "/images/activities_kids_learning.png",
       title: "Interactive Education",
-      tag: "Activities",
       desc: "Teacher guided building block sessions.",
       span: "md:col-span-2 md:row-span-1",
     },
@@ -67,9 +63,6 @@ export default function Gallery() {
               {/* Overlay (always visible slightly on mobile, slides up on hover) */}
               <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/25 to-transparent opacity-90 transition-opacity duration-300 flex flex-col justify-end p-6">
                 <div>
-                  <span className="inline-block bg-brand-teal text-white font-display text-xs font-bold px-3 py-1 rounded-full mb-3">
-                    {img.tag}
-                  </span>
                   <h3 className="text-white font-display text-xl font-bold mb-1">
                     {img.title}
                   </h3>

@@ -63,17 +63,17 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-3 text-sm">
                 <Phone className="w-5 h-5 text-brand-pink shrink-0" />
-                <a href="tel:+919876543210" className="hover:text-white transition-colors">+91 98765 43210</a>
+                <a href="tel:+919536717172" className="hover:text-white transition-colors">+91 95367 17172</a>
               </li>
               <li className="flex items-center gap-3 text-sm">
                 <Mail className="w-5 h-5 text-brand-blue shrink-0" />
-                <a href="mailto:info@adhyankidz.com" className="hover:text-white transition-colors">info@adhyankidz.com</a>
+                <a href="mailto:adhyankidz@gmail.com" className="hover:text-white transition-colors">adhyankidz@gmail.com</a>
               </li>
               <li className="flex items-start gap-3 text-sm">
                 <Clock className="w-5 h-5 text-brand-teal shrink-0 mt-0.5" />
                 <div>
                   <p className="font-medium text-white">Office Timings:</p>
-                  <p className="text-slate-400 text-xs mt-0.5">Monday - Saturday: 8:00 AM - 2:00 PM</p>
+                  <p className="text-slate-400 text-xs mt-0.5">Monday - Saturday: 8:30 AM - 1:30 PM</p>
                 </div>
               </li>
             </ul>

@@ -109,34 +109,28 @@ export default function Hero() {
               {/* Decorative background circle */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 sm:w-96 sm:h-96 bg-brand-yellow/30 rounded-full blur-3xl -z-10" />
 
-              {/* Photo 1 (Main Hero Image - Play Area / classroom) */}
+              {/* Photo 1 (Main Hero Image) */}
               <div className="relative z-10 w-72 h-72 sm:w-[320px] sm:h-[320px] rotate-[-4deg] rounded-3xl overflow-hidden border-8 border-white dark:border-[#25180E] shadow-xl hover:rotate-0 transition-transform duration-500 group">
                 <Image
-                  src="/images/photo_2026-06-04_22-30-09.jpg"
+                  src="/images/activities_kids_playing.png"
                   alt="Adhyan Kidz environment and play school activities"
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
                   sizes="(max-w-72) 100vw, 320px"
                   priority
                 />
-                <div className="absolute top-3 left-3 bg-brand-pink text-white font-display text-xs font-bold px-3 py-1 rounded-full shadow-md">
-                  🎨 Play Area
-                </div>
               </div>
 
               {/* Photo 2 (Secondary Hero Image - Class activities) */}
               <div className="absolute -bottom-8 -right-4 sm:-right-8 z-20 w-52 h-52 sm:w-[240px] sm:h-[240px] rotate-[8deg] rounded-3xl overflow-hidden border-8 border-white dark:border-[#25180E] shadow-2xl hover:rotate-0 transition-transform duration-500 group">
                 <Image
-                  src="/images/photo_2026-06-04_22-30-17.jpg"
+                  src="/images/activities_kids_learning.png"
                   alt="Adhyan Kidz classroom setup"
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
                   sizes="(max-w-52) 100vw, 240px"
                   priority
                 />
-                <div className="absolute bottom-3 right-3 bg-brand-teal text-white font-display text-xs font-bold px-3 py-1 rounded-full shadow-md">
-                  📚 Classroom
-                </div>
               </div>
             </div>
           </div>
