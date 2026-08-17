@@ -4,7 +4,7 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 COPY package.json package-lock.json ./
-RUN npm ci
+RUN npm ci || npm install --legacy-peer-deps --no-audit --no-fund
 
 # Stage 2: Building the production assets
 FROM node:20-alpine AS builder

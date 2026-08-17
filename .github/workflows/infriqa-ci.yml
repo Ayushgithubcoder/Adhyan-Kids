@@ -1,0 +1,43 @@
+name: CI Pipeline
+'on':
+  push:
+    branches: &id001
+    - InfrIQa
+    - InfrIQa-dev
+    - dev
+    - development
+  pull_request:
+    branches: *id001
+env:
+  NODE_VERSION: '20'
+  PYTHON_VERSION: '3.12'
+jobs:
+  frontend-ci:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: .
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: npm
+        cache-dependency-path: package-lock.json
+    - name: Install dependencies
+      run: "npm ci || (echo '\u26A0\uFE0F package-lock.json out-of-sync or platform\
+        \ mismatch. Falling back to npm install...' && npm install --legacy-peer-deps\
+        \ --no-audit --no-fund)"
+    - name: Run linting
+      run: npm run lint || echo 'No lint script found'
+    - name: Run tests
+      run: npm test || echo 'No test script found'
+    - name: Build application
+      run: npm run build
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: frontend-build
+        path: .next

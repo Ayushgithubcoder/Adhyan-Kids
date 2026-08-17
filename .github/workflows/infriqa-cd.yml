@@ -1,0 +1,109 @@
+name: CD Pipeline
+'on':
+  push:
+    branches:
+    - InfrIQa
+    - InfrIQa-dev
+    - dev
+    - development
+concurrency:
+  group: deploy-${{ github.ref_name }}
+  cancel-in-progress: false
+env:
+  AZURE_SUBSCRIPTION_ID: d6c69b8a-1b49-482e-80c0-95ccb98fd3c6
+  AZURE_RESOURCE_GROUP: Test-04-dev-rg
+  NODE_VERSION: '20'
+  PYTHON_VERSION: '3.12'
+jobs:
+  deploy-database-test-04-dev-cosmos:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Login to Azure
+      uses: azure/login@v2
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    - name: Verify Azure CLI
+      run: az --version
+    - name: Verify Cosmos DB Connection
+      run: az cosmosdb show --name test-04-dev-cosmos --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --query 'documentEndpoint' -o tsv
+  deploy-backend-test-04-dev-nextjs-service:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Login to Azure
+      uses: azure/login@v2
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    - name: Set Active Azure Subscription
+      run: az account set --subscription ${{ env.AZURE_SUBSCRIPTION_ID }}
+    - name: Login to ACR
+      run: az acr login --name test04devinfrastructureb129e8
+    - name: Build and Push Docker Image
+      run: |-
+        docker build -t test04devinfrastructureb129e8.azurecr.io/test-04-dev-nextjs-service:${{ github.sha }} -t test04devinfrastructureb129e8.azurecr.io/test-04-dev-nextjs-service:latest -f Dockerfile .
+        docker push test04devinfrastructureb129e8.azurecr.io/test-04-dev-nextjs-service:${{ github.sha }}
+        docker push test04devinfrastructureb129e8.azurecr.io/test-04-dev-nextjs-service:latest
+    - name: Deploy to Container App
+      run: |-
+        ACR_USER=$(az acr credential show --name test04devinfrastructureb129e8 --query 'username' -o tsv)
+        ACR_PASS=$(az acr credential show --name test04devinfrastructureb129e8 --query 'passwords[0].value' -o tsv)
+        az containerapp registry set \
+          --name test-04-dev-nextjs-service \
+          --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
+          --server test04devinfrastructureb129e8.azurecr.io \
+          --username "$ACR_USER" \
+          --password "$ACR_PASS"
+        az containerapp ingress update \
+          --name test-04-dev-nextjs-service \
+          --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
+          --target-port 3000
+        az containerapp update \
+          --name test-04-dev-nextjs-service \
+          --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
+          --image test04devinfrastructureb129e8.azurecr.io/test-04-dev-nextjs-service:${{ github.sha }}
+  deploy-backend-test-04-dev-backend-c1b4d7:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: .
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Login to Azure
+      uses: azure/login@v2
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    - name: Set Active Azure Subscription
+      run: az account set --subscription ${{ env.AZURE_SUBSCRIPTION_ID }}
+    - name: Configure Backend Database App Settings
+      run: |-
+        CONNECTION_STRING=$(az cosmosdb keys list --name test-04-dev-cosmos --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --type connection-strings --query 'connectionStrings[0].connectionString' -o tsv)
+        az webapp config appsettings set --name test-04-dev-backend-c1b4d7 --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --settings DATABASE_URL="$CONNECTION_STRING"
+    - name: Configure App Service CORS, App Settings and Startup Command
+      run: |-
+        az webapp config appsettings set --name test-04-dev-backend-c1b4d7 --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --settings NODE_ENV="production" SCM_DO_BUILD_DURING_DEPLOYMENT="true" ENABLE_ORYX_BUILD="true"
+        az webapp config set --name test-04-dev-backend-c1b4d7 --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --startup-file "npm start"
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: npm
+        cache-dependency-path: package-lock.json
+    - name: Install dependencies
+      run: "npm ci || (echo '\u26A0\uFE0F package-lock.json out-of-sync or platform mismatch. Falling back to npm install...' && npm install --legacy-peer-deps --no-audit --no-fund)"
+    - name: Configure App Service Port Settings
+      uses: azure/CLI@v2
+      with:
+        inlineScript: az webapp config appsettings set --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --name test-04-dev-backend-c1b4d7 --settings WEBSITES_PORT=3000 PORT=3000
+    - name: Deploy to Azure App Service
+      uses: azure/webapps-deploy@v3
+      with:
+        app-name: test-04-dev-backend-c1b4d7
+        slot-name: production
+        package: .
+        publish-profile: ${{ secrets.APP_SERVICE }}
+    - name: Verify Backend Deployment
+      run: "echo 'Verifying backend deployment health at https://test-04-dev-backend-c1b4d7.azurewebsites.net...'\nsuccess=false\nwait_sec=5\nfor i in {1..10}; do\n  if curl -s -f --connect-timeout 5 --max-time 10 \"https://test-04-dev-backend-c1b4d7.azurewebsites.net/health\" > /dev/null || curl -s -f --connect-timeout 5 --max-time 10 \"https://test-04-dev-backend-c1b4d7.azurewebsites.net/api/health\" > /dev/null || curl -s -f --connect-timeout 5 --max-time 10 \"https://test-04-dev-backend-c1b4d7.azurewebsites.net\" > /dev/null; then\n    echo '\u2705 Backend health check passed!'\n    success=true\n    break\n  fi\n  echo \"Attempt $i failed. Retrying in ${wait_sec}s...\"\n  sleep $wait_sec\n  wait_sec=$((wait_sec * 2 > 120 ? 120 : wait_sec * 2))\ndone\nif [ \"$success\" = false ]; then\n  echo '\u274C Backend health check failed after all attempts.'\n  exit 1\nfi"

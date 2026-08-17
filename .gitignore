@@ -1,45 +1,76 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
-/node_modules
-/.pnp
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/versions
-
-# testing
-/coverage
-
-# next.js
-/.next/
-/out/
-
-# production
-/build
-
-# misc
-.DS_Store
-*.pem
-
-# debug
+# Node.js
+node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-.pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
-.env*
+# Build artifacts
+dist/
+build/
+coverage/
+*.tgz
 
-# vercel
-.vercel
+# Environment files
+.env
+.env.local
+.env.*.local
 
-# typescript
+# IDE and editor files
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+*.swp
+*.swo
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Icon?
+Desktop.ini
+
+# Logs and runtime data
+*.log
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Docker
+.docker/
+docker-compose.override.yml
+
+# TypeScript
 *.tsbuildinfo
-next-env.d.ts
 
-# local diagnostics & source assets
-diagnostics.js
-IMG_*.jpg
+# Miscellaneous
+*.cache
+*.tmp
+*.bak
+*.orig
+*.swp
+*.swo
+*.class
+*.jar
+*.war
+*.ear
+*.iml
+__pycache__/
+*.py[cod]
+!package.json
+!package-lock.json
+!requirements.txt
+!*.yml
+
+# InfrIQa generated manifest
+.infriqa/
+
+
+# OpenTofu / Terraform local files
+tofu/.terraform/
+tofu/*.tfstate
+tofu/*.tfstate.*
+tofu/tofu.tfvars
+tofu/terraform.tfvars
+tofu/crash.log
